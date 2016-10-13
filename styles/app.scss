@@ -1,0 +1,14 @@
+body {
+    background-color: #f4f398;
+
+    canvas {
+        position: relative;
+    }
+
+    &.loaded {
+        #loading {
+           display: none;
+        }
+    }
+}
+
