@@ -29,6 +29,8 @@ export default class Game {
             return;
         }
 
+        // TODO: Do lookup first
+
         this.gameObjects.push(go);
 
         go.setGame(this);
