@@ -5,22 +5,25 @@
 import Logger from './../logger';
 
 export default class Item {
-    constructor(...args) {
-
-        this.id = args[0];
-
+    constructor(id) {
+        Logger.print('info', ['Create new game object', this]);
+        this.id = id;
     }
 
-    setGame(game) {
-        this.game = game;
+    update(game) {
+        this.game = this.game || game;
     }
 
-    update() {
+    destroy() {
+        delete this.game.gameObjects[this.id];
+    }
 
+    draw() {
         if (typeof this.game === 'undefined') {
             Logger.print('debug', ['Game must be defined to update', this]);
             return false;
         }
 
+        return true;
     }
 }

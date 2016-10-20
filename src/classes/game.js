@@ -1,9 +1,15 @@
 import Logger from './../logger';
 
+const ballId = Symbol();
+const paddleId = Symbol();
+
 export default class Game {
-    constructor(playerName = 'Default') {
+    constructor(playerName = 'Default', ball, paddle) {
         this.playerName = playerName;
-        this.gameObjects = [];
+        this[ballId] = ball;
+        this[paddleId] = paddle;
+
+        this.gameObjects = {};
         this.updateInterval = undefined;
 
         this.canvasElement = document.createElement('canvas');
@@ -22,19 +28,30 @@ export default class Game {
         this.runUpdateLoop();
     }
 
+    render(go) {
+        go.update(this);
+        go.draw();
+    }
+
     addGameObject(go) {
 
-        if (typeof go !== 'object') {
+        if (typeof go !== 'object' || !go.hasOwnProperty('id')) {
             Logger.print('error', ['Invalid game item']);
             return;
         }
 
-        // TODO: Do lookup first
+        if (this.gameObjects.hasOwnProperty(go.id)) {
+            Logger.print('error', ['Object with this id is already added', go.id]);
+            return;
+        }
 
-        this.gameObjects.push(go);
+        if (go.id !== this[ballId]) {
+            this.gameObjects[go.id] = go;
+        } else {
+            this.ballEl = go;
+        }
 
-        go.setGame(this);
-
+        this.render(go);
         return go;
     }
 
@@ -47,14 +64,17 @@ export default class Game {
 
         this.updateInterval = setInterval(() => {
 
-            for (var i = 0; i < this.gameObjects.length; i++) {
-                let go = this.gameObjects[i];
-                // TODO: Check if needs to be updated if visible
-                go.update();
+            this.ctx.clearRect(0, 0, this.canvasElement.width, this.canvasElement.height);
+
+            for (var key in this.gameObjects) {
+                if (this.gameObjects.hasOwnProperty(key)) {
+                    this.render(this.gameObjects[key]);
+                }
             }
 
-        }, 10)
+            this.render(this.ballEl);
 
+        }, 10)
     }
 
 }
