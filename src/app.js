@@ -41,7 +41,7 @@ let runApp = () => {
 
     game.addGameObject(new Rectangle('topBorder', {
         x : 0,
-        y : 1
+        y : 0
     }, {
         width : canvas.width,
         height : 2
