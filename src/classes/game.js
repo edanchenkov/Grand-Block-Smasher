@@ -1,13 +1,10 @@
 import Logger from './../logger';
 
-const ballId = Symbol();
-const paddleId = Symbol();
-
 export default class Game {
-    constructor(playerName = 'Default', ball, paddle) {
+    constructor(playerName = 'Default', ballId = 'ball') {
+
         this.playerName = playerName;
-        this[ballId] = ball;
-        this[paddleId] = paddle;
+        this.ballId = ballId;
 
         this.gameObjects = {};
         this.updateInterval = undefined;
@@ -45,11 +42,7 @@ export default class Game {
             return;
         }
 
-        if (go.id !== this[ballId]) {
-            this.gameObjects[go.id] = go;
-        } else {
-            this.ballEl = go;
-        }
+        this.gameObjects[go.id] = go;
 
         this.render(go);
         return go;
@@ -63,18 +56,23 @@ export default class Game {
         }
 
         this.updateInterval = setInterval(() => {
-
-            this.ctx.clearRect(0, 0, this.canvasElement.width, this.canvasElement.height);
-
+            this.clearCanvas();
             for (var key in this.gameObjects) {
                 if (this.gameObjects.hasOwnProperty(key)) {
                     this.render(this.gameObjects[key]);
                 }
             }
-
-            this.render(this.ballEl);
-
         }, 10)
+    }
+
+    clearCanvas() {
+        this.ctx.clearRect(0, 0, this.canvasElement.width, this.canvasElement.height);
+    }
+
+    gameOver() {
+        Logger.print('info', ['Game is over']);
+        clearInterval(this.updateInterval);
+        // this.clearCanvas();
     }
 
 }

@@ -3,13 +3,14 @@ import Rectangle from './rectangle';
 let events = ['keyup', 'keydown'];
 
 export default class Paddle extends Rectangle {
-    constructor(id, posistion, size) {
+    constructor(id, posistion, size, options = {}) {
         super(id);
 
         this.position = posistion;
         this.size = size;
-        this.destroyable = false;
-        this.fillStyle = 'blue';
+
+        this.destroyable = options.destroyable;
+        this.fillStyle = options.color || 'blue';
 
         events.map((e) => {
             document.addEventListener(e, (e) => {
@@ -17,10 +18,10 @@ export default class Paddle extends Rectangle {
 
                 if (key === 37) {
                     //    Go left
-                    this.position.x -= 10.5;
+                    this.position.x -= 40.5;
                 } else if (key === 39) {
                     // Go right
-                    this.position.x += 10.5;
+                    this.position.x += 40.5;
                 }
             });
         });

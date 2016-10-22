@@ -2,14 +2,14 @@ import Item from './item';
 
 
 export default class Rectangle extends Item {
-    constructor(id, posistion, size, destroyable) {
+    constructor(id, posistion, size, options = {}) {
         super(id);
 
-        this.destroyable = destroyable;
         this.position = posistion;
         this.size = size;
 
-        this.fillStyle = '#FF0000';
+        this.destroyable = options.destroyable;
+        this.fillStyle = options.color || '#FF0000';
 
     }
 

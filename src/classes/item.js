@@ -15,6 +15,7 @@ export default class Item {
     }
 
     destroy() {
+        Logger.print('info', ['Destroy game object', this]);
         delete this.game.gameObjects[this.id];
     }
 
