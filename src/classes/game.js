@@ -96,7 +96,7 @@ export default class Game {
         // this.clearCanvas();
     }
 
-    generateBlocks(numOfBlocks = 1, size = [300, 30], gap = 20) {
+    generateBlocks(numOfBlocks = 15, size = [30, 30], gap = 20) {
 
         Logger.print('info', ['Generating block', arguments]);
 
