@@ -14,9 +14,14 @@ export default class Item {
         this.game = this.game || game;
     }
 
+    handleCollision() {
+        if (this.destroyable) {
+            this.destroy();
+        }
+    }
+
     destroy() {
         Logger.print('info', ['Destroy game object', this]);
-        delete this.game.gameObjects[this.id];
     }
 
     draw() {

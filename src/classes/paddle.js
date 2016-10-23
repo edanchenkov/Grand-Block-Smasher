@@ -9,8 +9,26 @@ export default class Paddle extends Rectangle {
         this.position = posistion;
         this.size = size;
 
+        this.speed = 10;
+
         this.destroyable = options.destroyable;
         this.fillStyle = options.color || 'blue';
+
+        this.handleKeyboardInput = false;
+
+    }
+
+    update(game) {
+        super.update(game);
+
+        if (!this.handleKeyboardInput) {
+            this.registerKeyboardEvents();
+            this.handleKeyboardInput = true;
+        }
+    }
+
+    registerKeyboardEvents() {
+        let step = 3 * this.speed;
 
         events.map((e) => {
             document.addEventListener(e, (e) => {
@@ -18,18 +36,23 @@ export default class Paddle extends Rectangle {
 
                 if (key === 37) {
                     //    Go left
-                    this.position.x -= 40.5;
-                } else if (key === 39) {
+                    if (this.position.x - this.size.width < 0) {
+                        this.position.x = 0;
+                    } else {
+                        this.position.x -= step;
+                    }
+                }
+
+                if (key === 39) {
                     // Go right
-                    this.position.x += 40.5;
+                    if ((this.position.x + this.size.width + step >= this.game.canvasElement.width)) {
+                        this.position.x = this.game.canvasElement.width - this.size.width;
+                    } else {
+                        this.position.x += step;
+                    }
                 }
             });
         });
-
-    }
-
-    update(game) {
-        super.update(game);
     }
 
 }

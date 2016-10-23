@@ -1,5 +1,7 @@
 import Logger from './../logger';
 
+import Rectangle from './rectangle';
+
 export default class Game {
     constructor(playerName = 'Default', ballId = 'ball') {
 
@@ -21,8 +23,6 @@ export default class Game {
         this.canvasElement.height = canvasHeight;
 
         document.body.appendChild(this.canvasElement);
-
-        this.runUpdateLoop();
     }
 
     render(go) {
@@ -44,7 +44,6 @@ export default class Game {
 
         this.gameObjects[go.id] = go;
 
-        this.render(go);
         return go;
     }
 
@@ -56,6 +55,12 @@ export default class Game {
         }
 
         this.updateInterval = setInterval(() => {
+
+            if (Object.keys(this.gameObjects).length === 2) {
+                this.generateBlocks();
+                return;
+            }
+
             this.clearCanvas();
             for (var key in this.gameObjects) {
                 if (this.gameObjects.hasOwnProperty(key)) {
@@ -69,10 +74,60 @@ export default class Game {
         this.ctx.clearRect(0, 0, this.canvasElement.width, this.canvasElement.height);
     }
 
+    start() {
+
+        for (let key in this.gameObjects) {
+            if (this.gameObjects.hasOwnProperty(key)) {
+                let go = this.gameObjects[key];
+                this.render(go);
+            }
+        }
+
+        this.runUpdateLoop();
+    }
+
+    pause() {
+
+    }
+
     gameOver() {
         Logger.print('info', ['Game is over']);
         clearInterval(this.updateInterval);
         // this.clearCanvas();
+    }
+
+    generateBlocks(numOfBlocks = 1, size = [300, 30], gap = 20) {
+
+        Logger.print('info', ['Generating block', arguments]);
+
+        let go, position = [gap, size[1]];
+
+        for (var i = 1; i <= numOfBlocks; i++) {
+
+            if (go) {
+                position[0] = go.position.x + go.size.width + gap;
+            }
+
+            if (position[0] + size[0] > this.canvasElement.width) {
+                position[0] = gap;
+                position[1] += 100;
+            }
+
+            go = this.addGameObject(new Rectangle('block_' + i, {
+                x : position[0],
+                y : position[1]
+            }, {
+                width : size[0],
+                height : size[1]
+            }, {
+                destroyable : true
+            }));
+        }
+    }
+
+    remove(go) {
+        delete this.gameObjects[go.id];
+        go.destroy();
     }
 
 }
