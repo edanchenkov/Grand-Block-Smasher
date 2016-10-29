@@ -1,4 +1,5 @@
 import Rectangle from './rectangle';
+import config from '../config'
 
 let events = ['keyup', 'keydown'];
 
@@ -9,7 +10,7 @@ export default class Paddle extends Rectangle {
         this.position = posistion;
         this.size = size;
 
-        this.speed = 10;
+        this.speedMultiplier = 8;
 
         this.destroyable = options.destroyable;
         this.fillStyle = options.color || 'blue';
@@ -28,7 +29,7 @@ export default class Paddle extends Rectangle {
     }
 
     registerKeyboardEvents() {
-        let step = 3 * this.speed;
+        let step = this.speed;
 
         events.map((e) => {
             document.addEventListener(e, (e) => {

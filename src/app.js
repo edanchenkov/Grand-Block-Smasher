@@ -1,4 +1,5 @@
 import './../styles/app.scss';
+import Vue from 'vue';
 
 import Logger from './logger';
 import Game from './classes/game';
@@ -13,68 +14,68 @@ const paddleId = 'paddle';
 
 let runApp = () => {
     Logger.print('info', ['Running', app]);
-    document.body.classList.add('loaded');
 
-    const game = new Game('', ballId);
-    const canvas = game.canvasElement;
+    let dashboard = new Vue({
+        el : '#v-dashboard',
+        data : {
+            score : 0,
+            speed : 0.00
+        }
+    });
 
-    let paddleWidth = canvas.width / 5;
-    let paddleHeight = canvas.height / 50;
+    let updateScore = (totalScore, ballSpeed) => {
+        dashboard.score = totalScore;
+        dashboard.speed = (ballSpeed * 10).toFixed(2);
+    };
 
-    game.addGameObject(new Paddle(paddleId, {
-        x : (canvas.width - paddleWidth) / 2,
-        y : canvas.height * 0.95
-    }, {
-        width : paddleWidth,
-        height : paddleHeight
-    }));
-
-    let circleRadius = (canvas.width / canvas.height) * 7.5;
-
-    game.addGameObject(new Circle(ballId, {
-            x : canvas.width / 2,
-            y : canvas.height / 2
+    let welcomeScreen = new Vue({
+        el : '#v-welcome-screen',
+        data : {
+            title : 'Welcome',
+            confirmButtonText : 'Go!',
+            playerName : '',
+            speed : 5,
+            classObject : {
+                'is-active' : true
+            }
         },
-        circleRadius
-    ));
+        methods : {
+            start : () => {
 
-    const borderColor = 'grey';
+                welcomeScreen.classObject['is-active'] = false;
 
-    // game.addGameObject(new Rectangle('topBorder', {
-    //     x : 0,
-    //     y : 0
-    // }, {
-    //     width : canvas.width,
-    //     height : 2
-    // }, { color : borderColor }), true);
-    //
-    // game.addGameObject(new Rectangle('leftBorder', {
-    //     x : 0,
-    //     y : 0
-    // }, {
-    //     width : 2,
-    //     height : canvas.height
-    // }, { color : borderColor }));
-    //
-    // game.addGameObject(new Rectangle('rightBorder', {
-    //     x : canvas.width - 2,
-    //     y : 0
-    // }, {
-    //     width : 2,
-    //     height : canvas.height
-    // }, { color : borderColor }));
-    //
-    // game.addGameObject(new Rectangle('bottomBorder', {
-    //     x : 0,
-    //     y : canvas.height - 2
-    // }, {
-    //     width : canvas.width,
-    //     height : 2
-    // }, { color : borderColor }));
+                const game = new Game(welcomeScreen.playerName, ballId, welcomeScreen.speed);
+                const canvas = game.canvasElement;
+
+                let paddleWidth = canvas.width / 5;
+                let paddleHeight = canvas.height / 50;
+
+                game.addGameObject(new Paddle(paddleId, {
+                    x : (canvas.width - paddleWidth) / 2,
+                    y : canvas.height * 0.95
+                }, {
+                    width : paddleWidth,
+                    height : paddleHeight
+                }));
+
+                let circleRadius = (canvas.width / canvas.height) * 7.5;
+
+                game.addGameObject(new Circle(ballId, {
+                        x : canvas.width / 2,
+                        y : canvas.height / 2
+                    },
+                    circleRadius
+                ));
 
 
-    game.generateBlocks();
-    game.start();
+                game.onUpdate.push(updateScore);
+
+                game.generateBlocks();
+                game.start();
+            }
+        }
+    });
+
 };
 
 window.addEventListener('load', runApp);

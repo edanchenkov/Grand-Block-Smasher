@@ -13,10 +13,15 @@
     "babel-core": "^6.17.0",
     "babel-loader": "^6.2.5",
     "babel-preset-es2015": "^6.16.0",
+    "bulma-loader": "^1.0.1",
     "css-loader": "^0.25.0",
     "node-sass": "^3.10.1",
     "sass-loader": "^4.0.2",
     "style-loader": "^0.13.1",
     "webpack": "^1.13.2"
+  },
+  "dependencies": {
+    "bulma": "^0.2.3",
+    "vue": "^2.0.3"
   }
 }

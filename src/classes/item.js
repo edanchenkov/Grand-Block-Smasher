@@ -8,10 +8,16 @@ export default class Item {
     constructor(id) {
         Logger.print('info', ['Create new game object', this]);
         this.id = id;
+        this.speedMultiplier = 1;
     }
 
-    update(game) {
-        this.game = this.game || game;
+    update () {
+
+    }
+
+    setGame(game) {
+        this.game = game;
+        this.speed = game.speed * this.speedMultiplier;
     }
 
     handleCollision() {

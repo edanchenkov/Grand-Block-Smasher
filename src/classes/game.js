@@ -3,10 +3,15 @@ import Logger from './../logger';
 import Rectangle from './rectangle';
 
 export default class Game {
-    constructor(playerName = 'Default', ballId = 'ball') {
+    constructor(playerName = 'Default', ballId = 'ball', speed = 3) {
 
         this.playerName = playerName;
         this.ballId = ballId;
+        this.speed = speed;
+
+        this.onUpdate = [];
+
+        this.totalScore = 0;
 
         this.gameObjects = {};
         this.updateInterval = undefined;
@@ -43,6 +48,7 @@ export default class Game {
         }
 
         this.gameObjects[go.id] = go;
+        go.setGame(this);
 
         return go;
     }
@@ -67,7 +73,9 @@ export default class Game {
                     this.render(this.gameObjects[key]);
                 }
             }
-        }, 10)
+        }, 10);
+
+        this.updateScore();
     }
 
     clearCanvas() {
@@ -96,13 +104,14 @@ export default class Game {
         // this.clearCanvas();
     }
 
-    generateBlocks(numOfBlocks = 15, size = [30, 30], gap = 20) {
+    generateBlocks(numOfRows = 3, size = [30, 30], gap = 20) {
 
         Logger.print('info', ['Generating block', arguments]);
 
+        let numOfBlocksPerRow = Math.floor(this.canvasElement.width / (size[0] + gap));
         let go, position = [gap, size[1]];
 
-        for (var i = 1; i <= numOfBlocks; i++) {
+        for (var i = 1; i <= numOfRows * numOfBlocksPerRow; i++) {
 
             if (go) {
                 position[0] = go.position.x + go.size.width + gap;
@@ -126,8 +135,18 @@ export default class Game {
     }
 
     remove(go) {
+        this.totalScore += go.score;
+
+        this.updateScore();
+
         delete this.gameObjects[go.id];
         go.destroy();
+    }
+
+    updateScore() {
+        for (let x in this.onUpdate) {
+            this.onUpdate[x].call(this, this.totalScore, this.gameObjects[this.ballId].speed);
+        }
     }
 
 }

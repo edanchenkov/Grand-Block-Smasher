@@ -17,5 +17,10 @@ module.exports = {
                 loaders : ['style', 'css?sourceMap', 'sass?sourceMap']
             }
         ]
+    },
+    resolve : {
+        alias : {
+            'vue$' : 'vue/dist/vue.js'
+        }
     }
 };

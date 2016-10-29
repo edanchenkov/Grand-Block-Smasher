@@ -1,4 +1,5 @@
 import Item from './item';
+import config from '../config'
 
 export default class Circle extends Item {
     constructor(id, position, radius, options = {}) {
@@ -12,8 +13,6 @@ export default class Circle extends Item {
 
         this.angle = -90;
         this.radians = this.angle * Math.PI / 180;
-
-        this.speed = 4;
 
         this.deltaY = this.speed;
         this.deltaX = this.speed;
@@ -95,7 +94,7 @@ export default class Circle extends Item {
 
         this.speed += 0.002;
 
-        console.info('Speed', this.speed);
+        // console.info('Speed', this.speed);
     }
 
     draw() {
