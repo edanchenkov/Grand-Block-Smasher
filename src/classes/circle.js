@@ -93,8 +93,6 @@ export default class Circle extends Item {
         }
 
         this.speed += 0.002;
-
-        // console.info('Speed', this.speed);
     }
 
     draw() {
