@@ -1,6 +1,6 @@
 {
   "name": "GBS",
-  "version": "0.0.1",
+  "version": "0.9.9",
   "description": "Small arcade-like game written in JavaScript ES2015",
   "main": "webpack.config.js",
   "scripts": {
