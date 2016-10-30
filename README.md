@@ -7,6 +7,10 @@ Block crusher game. Player needs to crash all the block with a ball, that bounce
 version : `0.9.9` </br>
 status : `suspended`
 
+##### Known issues
+
+ - Ball bouncing physic can use some more work. 
+
 ### Compile js and scss => Run
 
 ```bash
