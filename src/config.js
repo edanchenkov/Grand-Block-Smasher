@@ -1,7 +1,7 @@
 export default {
     speed: 4,
-    logs: true,
-    sound: false,
+    logs: false,
+    sound: true,
 
     base64files : {
         sounds: {
