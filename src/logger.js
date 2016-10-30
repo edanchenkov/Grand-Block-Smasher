@@ -1,5 +1,9 @@
+import config from './config'
+
 export default class Logger {
     static print(label, text) {
-        console[label].apply(console, text);
+        if(config.logs) {
+            console[label].apply(console, text);
+        }
     }
 }

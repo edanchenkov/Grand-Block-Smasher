@@ -1,5 +1,4 @@
 import Item from './item';
-import config from '../config'
 
 export default class Circle extends Item {
     constructor(id, position, radius, options = {}) {
@@ -89,6 +88,7 @@ export default class Circle extends Item {
     handleCollision(go) {
 
         if (go && go.destroyable) {
+            this.game.totalScore += go.score * this.game.speed;
             this.game.remove(go);
         }
 

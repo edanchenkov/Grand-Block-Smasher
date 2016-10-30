@@ -13,7 +13,7 @@ export default class Rectangle extends Item {
         this.fillStyle = options.color || '#FF0000';
 
         // How much point this object brings
-        this.score = 10;
+        this.score = 5;
 
         this.sound = new Audio(config.base64files.sounds.beep)
 
@@ -21,8 +21,12 @@ export default class Rectangle extends Item {
 
     destroy() {
         super.destroy();
-        this.sound.play();
+
+        if (config.sound) {
+            this.sound.play();
+        }
     }
+
 
 
     draw() {

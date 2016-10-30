@@ -28,6 +28,22 @@ let runApp = () => {
         dashboard.speed = (ballSpeed * 10).toFixed(2);
     };
 
+    let scoreModal = new Vue({
+        el : '#v-score-screen',
+        data : {
+            classObject : {
+                'is-active' : false
+            },
+            game : {}
+        },
+        methods : {
+            restart : ()=> {
+                scoreModal.game.restart();
+                scoreModal.classObject['is-active'] = false;
+            }
+        }
+    });
+
     let welcomeScreen = new Vue({
         el : '#v-welcome-screen',
         data : {
@@ -41,11 +57,12 @@ let runApp = () => {
         },
         methods : {
             start : () => {
-
                 welcomeScreen.classObject['is-active'] = false;
 
-                const game = new Game(welcomeScreen.playerName, ballId, welcomeScreen.speed);
+                const game = new Game(welcomeScreen.playerName, ballId, paddleId, welcomeScreen.speed);
                 const canvas = game.canvasElement;
+
+                scoreModal.game = game;
 
                 let paddleWidth = canvas.width / 5;
                 let paddleHeight = canvas.height / 50;
@@ -67,14 +84,17 @@ let runApp = () => {
                     circleRadius
                 ));
 
-
                 game.onUpdate.push(updateScore);
+                game.onGameOver.push(() => {
+                    scoreModal.classObject['is-active'] = true;
+                });
 
                 game.generateBlocks();
                 game.start();
             }
         }
     });
+
 
 };
 

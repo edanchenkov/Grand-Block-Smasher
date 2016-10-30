@@ -23,12 +23,17 @@ $body-background: $yellow;
 
 body {
 
-    [v-cloak] .v-cloak--hidden {
+    margin: 0 $size-1;
+    padding: $size-4 0 0 0;
+
+    [v-cloak] {
         display: none;
     }
 
     canvas {
         position: relative;
+        display: block;
+        margin: $size-1 auto;
     }
 
 }
